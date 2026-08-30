@@ -1,0 +1,11 @@
+# --- dependencies ---
+node_modules/
+
+# --- env / secrets ---
+.env
+
+
+# --- OS / editor junk ---
+.DS_Store
+.vscode/
+

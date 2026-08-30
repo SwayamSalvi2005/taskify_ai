@@ -1,0 +1,45 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  isVerified Boolean  @default(false)
+  tasks      Task[]
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @default("")
+  priority    Priority @default(MEDIUM)
+  dueDate     DateTime
+  completed    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  reminderSent Boolean  @default(false)
+  failureSent  Boolean  @default(false)
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId     String
+
+  @@index([ownerId])
+  @@index([ownerId, completed])
+  @@index([ownerId, priority])
+  @@index([ownerId, dueDate])
+}
