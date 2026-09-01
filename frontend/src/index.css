@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---- base styles ---- */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0B1120;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+/* custom scrollbar so it blends with our dark theme */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #111827;
+}
+::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 3px;
+}
