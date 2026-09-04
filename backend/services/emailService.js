@@ -37,7 +37,7 @@ const sendMail = async (to, subject, html) => {
 export const sendVerificationEmail = async (userEmail, token) => {
     
     // create verfication email using token
-    const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const FRONTEND_URL = process.env.CLIENT_URL || 'http://localhost:5173';
     const verifyUrl = `${FRONTEND_URL}/verify-email?token=${token}`;
     
     const html = `

@@ -81,8 +81,11 @@ export const registerService = async ({ name, email, password }) => {
         { id: user.id },
         process.env.JWT_SECRET,
         { expiresIn: '1h' }
-    ); 
-    await sendVerificationEmail(user.email, verifyToken);
+    );
+
+    // Fire and forget — don't block the response waiting for email
+    sendVerificationEmail(user.email, verifyToken)
+        .catch(err => console.error('Failed to send verification email:', err));
 
     return { 
         user: sanitizeUser(user),  // removed the pass
