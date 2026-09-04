@@ -59,11 +59,11 @@ const limiter = rateLimit({
 
 // this limiter is for signin / signup routes
 const authLimiter = rateLimit({
-    windowMs: 60 * 60 * 1000,
-    max: 5,
+    windowMs: 5 * 60 * 1000, // 5 minutes
+    max: 10,
     message: {
         success: false,
-        message: 'Too many signin/signup attempts, please try again after an hour'
+        message: 'Too many signin/signup attempts, please try again after 5 minutes'
     }
 });
 
