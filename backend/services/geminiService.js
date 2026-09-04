@@ -172,23 +172,15 @@ export const chatWithGeminiService = async (userId, message, allowActions = true
         ]);
 
 
-        // description inclusion decider
-        // check if the title contains generic keywords
-        const isTitleGeneric = (title) => {
-            const keywords = ['tasks', 'stuff', 'work', 'misc', 'list'];
-            return keywords.some(word => title.toLowerCase().includes(word));
-        };
-        // check if the users message ask for detailed info
-        const needsDetail = (msg) => {
-            const m = msg.toLowerCase();
-            return m.includes('explain') || m.includes('what') || m.includes('detail');
-        };
-        // so is above condition ( tilte genric, needs info) are true then include descriotiop to task, esle not
+        // Always include full task details so Gemini can answer any question about tasks.
+        // Previously description was stripped conditionally — that caused Gemini to say
+        // "I can't retrieve descriptions" even when it was in the data.
         const formatTask = (t) => {
-            if ((isTitleGeneric(t.title) || needsDetail(message)) && t.description) {
-                return `  - ${t.title}: ${t.description}`;
-            }
-            return `  - ${t.title}`;
+            const desc = t.description ? ` | Description: ${t.description}` : '';
+            const due = t.dueDate ? ` | Due: ${new Date(t.dueDate).toLocaleDateString()}` : ' | No due date';
+            const priority = ` | Priority: ${t.priority}`;
+            const status = ` | Status: ${t.completed ? 'Completed' : 'Pending'}`;
+            return `  - "${t.title}"${priority}${due}${status}${desc}`;
         };
 
 
@@ -295,8 +287,8 @@ ${actionInstructions}
     ${lowPriorityPendingDetails || '  None'}
 
 
-    **ALL PENDING TASKS DETAILS:**
-    ${pendingTasks.map(t => `${formatTask(t)} (Priority: ${t.priority}, Due: ${t.dueDate ? new Date(t.dueDate).toLocaleDateString() : 'No due date'})`).join('\n') || 'No pending tasks'}
+    **ALL TASKS (FULL DETAILS):**
+    ${tasks.map(t => formatTask(t)).join('\n') || 'No tasks'}
 
 Please provide a helpful, friendly response based on this complete profile and task data. Be specific and reference actual task names when relevant. Use emojis to make it engaging.`;
 
