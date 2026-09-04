@@ -119,7 +119,7 @@ export default function Sidebar({ onClose }) {
           Logout
         </button>
         <p className="text-xs text-gray-600 mt-3 px-3">
-          Made with ❤️ by<br />
+          Made with Coffee ☕️ by<br />
           <span className="text-gray-500">Swayam Salvi</span>
         </p>
       </div>
