@@ -29,7 +29,7 @@ const formatTaskForFrontend = (task) => {
     };
 };
 
-// 1. Create task servi
+// 1. Create task service
 export const createTaskService = async (data, userId) => {
     // get data
     const { title, description, priority, dueDate } = data;
