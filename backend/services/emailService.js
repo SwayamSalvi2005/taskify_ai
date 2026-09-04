@@ -1,20 +1,26 @@
-import { Resend } from 'resend';
+// switched to brevo http api — render blocks smtp so nodemailer/resend don't work
+const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
 
-// switched from nodemailer to resend because render blocks smtp connections
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// sends any email — subject and html body are passed in
 const sendMail = async (to, subject, html) => {
-    const { error } = await resend.emails.send({
-        from: 'Taskify AI <onboarding@resend.dev>',
-        to,
-        subject,
-        html
+    const res = await fetch(BREVO_API_URL, {
+        method: 'POST',
+        headers: {
+            'accept': 'application/json',
+            'content-type': 'application/json',
+            'api-key': process.env.BREVO_API_KEY
+        },
+        body: JSON.stringify({
+            sender: { name: 'Taskify AI', email: 'taskifyai2026@gmail.com' },
+            to: [{ email: to }],
+            subject,
+            htmlContent: html
+        })
     });
 
-    if (error) {
-        console.error('Error sending email:', error);
-        throw new Error(error.message);
+    if (!res.ok) {
+        const err = await res.json();
+        console.error('Error sending email:', err);
+        throw new Error(err.message || 'Failed to send email');
     }
 
     console.log(`Email sent to ${to}: ${subject}`);
