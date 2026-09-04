@@ -1,11 +1,25 @@
-# --- dependencies ---
+# ── Dependencies ──────────────────────────────
 node_modules/
 
-# --- env / secrets ---
+# ── Environment / Secrets ─────────────────────
 .env
+.env.local
+.env.*.local
 
+# ── Frontend (Vite) build output ──────────────
+frontend/dist/
+frontend/.vite/
 
-# --- OS / editor junk ---
+# ── Backend logs ──────────────────────────────
+*.log
+logs/
+
+# ── Prisma generated client ───────────────────
+# (regenerated via `prisma generate` — no need to commit)
+backend/primsa/generated/
+
+# ── OS / Editor junk ──────────────────────────
 .DS_Store
 .vscode/
+Thumbs.db
 
