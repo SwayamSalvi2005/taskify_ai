@@ -15,6 +15,7 @@ const generateToken = (userID) => {
     );
 };
 
+
 // helper fuction to strip the password
 const sanitizeUser = (user) => {
     // remove pass and put rest in safeUser
@@ -126,6 +127,39 @@ export const loginService = async ({ email, password }) => {
 
     // send the response
     return sendAuthResponse(user);
+};
+
+
+// 2.5 verify email service  (was missing — caused the startup crash)
+export const verifyEmailService = async (token) => {
+    if (!token) {
+        throw new Error('Verification token is missing');
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        const user = await prisma.user.findUnique({ where: { id: decoded.id } });
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        // already verified, just let them log in
+        if (user.isVerified) {
+            return { message: 'Email is already verified. You can log in.' };
+        }
+
+        // mark as verified
+        await prisma.user.update({
+            where: { id: decoded.id },
+            data: { isVerified: true }
+        });
+
+        return { message: 'Email verified successfully! You can now log in.' };
+    } catch (error) {
+        throw new Error('Invalid or expired verification token');
+    }
 };
 
 
