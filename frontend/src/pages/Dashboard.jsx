@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTasks } from '../context/TaskContext';
-import StatsCards from '../components/tasks/StatsCards';
+import StatsCards from '../components/tasks/StatsCard';
 import TaskList from '../components/tasks/TaskList';
 import TaskFormModal from '../components/tasks/TaskFormModal';
 
