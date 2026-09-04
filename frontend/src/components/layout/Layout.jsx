@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import TopBar from './TopBar';
+import TopBar from './TopBars';
 
 // layout: sidebar on left (drawer on mobile), content on right
 export default function Layout() {
